@@ -15,9 +15,12 @@ const fetchISSFlyOverTimes = ({ latitude, longitude }) => {
 const nextISSTimesForMyLocation = () => {
   return fetchMyIP()
     .then(body => fetchCoordsByIP(JSON.parse(body).ip))
-    .then(body => fetchISSFlyOverTimes({latitude: JSON.parse(body).latitude, longitude: JSON.parse(body).longitude}))
     .then(body => {
-      const { response } = JSON.parse(body);
+      const { latitude, longitude } = JSON.parse(body);
+      return fetchISSFlyOverTimes({ latitude, longitude });
+    })
+    .then(bodyFlyOver => {
+      const { response } = JSON.parse(bodyFlyOver);
       return response;
     });
 };
